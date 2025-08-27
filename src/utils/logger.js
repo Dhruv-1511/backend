@@ -1,0 +1,1 @@
+const morgan = require('morgan');\n\nconst stream = { write: (message) => console.log(message.trim()) };\nconst skip = () => process.env.NODE_ENV === 'test';\n\nconst logger = morgan(':method :url :status :res[content-length] - :response-time ms', { stream, skip });\n\nmodule.exports = logger;\n

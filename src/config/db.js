@@ -1,0 +1,1 @@
+const mongoose = require('mongoose');\nconst config = require('./index');\n\nmongoose.set('strictQuery', true);\n\nasync function connectDB() {\n  if (!config.mongoUri) {\n    throw new Error('MONGO_URI is not defined');\n  }\n  await mongoose.connect(config.mongoUri, {\n    autoIndex: config.env !== 'production',\n  });\n}\n\nmodule.exports = { connectDB };\n
