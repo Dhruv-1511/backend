@@ -8,7 +8,10 @@ const options = {
 			version: '1.0.0',
 			description: 'Authentication API for Sitenot backend',
 		},
-		servers: [{ url: 'http://localhost:4000' }],
+		servers: [
+			{ url: 'https://backend-9rz5.onrender.com', description: 'Production server' },
+			{ url: 'http://localhost:4000', description: 'Local development' },
+		],
 	},
 	apis: ['./src/routes/*.js'],
 };
