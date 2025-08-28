@@ -15,8 +15,6 @@ router.use(requireAuth);
  *   post:
  *     summary: Create a workspace
  *     tags: [Workspace]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -32,6 +30,22 @@ router.use(requireAuth);
  *                 items:
  *                   type: string
  *                   format: email
+ *     responses:
+ *       201:
+ *         description: Workspace created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
  */
 // Create workspace
 router.post(
@@ -63,8 +77,22 @@ router.post(
  *   get:
  *     summary: List my workspaces
  *     tags: [Workspace]
- *     security:
- *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of workspaces
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *       401:
+ *         description: Unauthorized
  */
 // List workspaces for current user (owner or invited)
 router.get('/mine', async (req, res, next) => {
@@ -87,14 +115,35 @@ router.get('/mine', async (req, res, next) => {
  *   get:
  *     summary: Workspace home summary
  *     tags: [Workspace]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Workspace summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totals:
+ *                   type: object
+ *                   properties:
+ *                     willGive:
+ *                       type: number
+ *                     willGet:
+ *                       type: number
+ *                 recent:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       404:
+ *         description: Workspace not found
+ *       401:
+ *         description: Unauthorized
  */
 // Home summary: totals to give and get, recent transactions
 router.get('/:workspaceId/home', async (req, res, next) => {

@@ -16,8 +16,6 @@ router.use('/:workspaceId', requireWorkspaceMember);
  *   post:
  *     summary: Create transaction (You gave/You got)
  *     tags: [Transaction]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -49,6 +47,22 @@ router.use('/:workspaceId', requireWorkspaceMember);
  *                 format: date-time
  *               billImageUrl:
  *                 type: string
+ *     responses:
+ *       201:
+ *         description: Transaction created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Party not found
  */
 // Create transaction (You gave / You got)
 router.post(
@@ -90,8 +104,6 @@ router.post(
  *   get:
  *     summary: Get transaction by id
  *     tags: [Transaction]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -103,6 +115,30 @@ router.post(
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Transaction details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 amount:
+ *                   type: number
+ *                 direction:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 date:
+ *                   type: string
+ *                 billImageUrl:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Transaction not found
  */
 // Get transaction
 router.get('/:workspaceId/transactions/:transactionId', async (req, res, next) => {
@@ -122,8 +158,6 @@ router.get('/:workspaceId/transactions/:transactionId', async (req, res, next) =
  *   put:
  *     summary: Update transaction
  *     tags: [Transaction]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -154,6 +188,32 @@ router.get('/:workspaceId/transactions/:transactionId', async (req, res, next) =
  *                 format: date-time
  *               billImageUrl:
  *                 type: string
+ *     responses:
+ *       200:
+ *         description: Transaction updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 amount:
+ *                   type: number
+ *                 direction:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 date:
+ *                   type: string
+ *                 billImageUrl:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Transaction not found
  */
 // Update transaction
 router.put(
@@ -185,8 +245,6 @@ router.put(
  *   delete:
  *     summary: Delete transaction
  *     tags: [Transaction]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -198,6 +256,13 @@ router.put(
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       204:
+ *         description: Transaction deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Transaction not found
  */
 // Delete transaction
 router.delete('/:workspaceId/transactions/:transactionId', async (req, res, next) => {

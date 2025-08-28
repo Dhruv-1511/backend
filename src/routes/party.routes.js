@@ -16,8 +16,6 @@ router.use('/:workspaceId', requireWorkspaceMember);
  *   post:
  *     summary: Create party
  *     tags: [Party]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -39,6 +37,22 @@ router.use('/:workspaceId', requireWorkspaceMember);
  *               type:
  *                 type: string
  *                 enum: [customer, supplier]
+ *     responses:
+ *       201:
+ *         description: Party created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Workspace not found
  */
 // Create party
 router.post(
@@ -67,8 +81,6 @@ router.post(
  *   get:
  *     summary: List parties with totals
  *     tags: [Party]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -81,6 +93,32 @@ router.post(
  *         schema:
  *           type: string
  *           enum: [customer, supplier]
+ *     responses:
+ *       200:
+ *         description: List of parties with totals
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   type:
+ *                     type: string
+ *                   phone:
+ *                     type: string
+ *                   willGive:
+ *                     type: number
+ *                   willGet:
+ *                     type: number
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Workspace not found
  */
 // List parties by type with totals (willGive/willGet per party)
 router.get('/:workspaceId/parties', async (req, res, next) => {
@@ -122,8 +160,6 @@ router.get('/:workspaceId/parties', async (req, res, next) => {
  *   get:
  *     summary: Party detail with history
  *     tags: [Party]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: workspaceId
@@ -135,6 +171,30 @@ router.get('/:workspaceId/parties', async (req, res, next) => {
  *         required: true
  *         schema:
  *           type: string
+ *     responses:
+ *       200:
+ *         description: Party details with transaction history
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                 phone:
+ *                   type: string
+ *                 transactions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Party not found
  */
 // Party detail with transaction history
 router.get('/:workspaceId/parties/:partyId', async (req, res, next) => {
